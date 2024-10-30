@@ -10,7 +10,7 @@
 # Prerequisites:
 # - PowerShell installed
 # - Azure CLI (az) installed and logged in (https://learn.microsoft.com/en-us/cli/azure/)
-# - signed in user needs rights to modify NSG (e.g. contributor) and to read status of the SHIR (e.g. reader), plus reader on the subscription
+# - signed in user needs rights to modify NSG (e.g. Network contributor) and to read status of the SHIR (e.g. reader), plus reader on the subscription
 
 param (
     [string]$synapseRresourceGroupName = "synapse_test",
@@ -60,6 +60,3 @@ $ipAddressesString = $ipAddresses -join ' '
 # Using Invoke-Expression to handle the command string
 $az_cmd = "az network nsg rule create --resource-group $nsgResourceGroupName --nsg-name $networkSecurityGroupName --name $securityRuleName --priority $priority --destination-address-prefixes $ipAddressesString --destination-port-ranges '443' --direction Outbound --access Allow --protocol '*' --description 'Allow outbound access to Synapse servicebus IPs'"
 Invoke-Expression $az_cmd
-
-# Output the number of IP addresses added to the network security group
-Write-Output "$($ipAddresses.Count) IP addresses added to the network security group."
